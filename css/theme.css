@@ -1,0 +1,180 @@
+:root {
+  --bg: #F6F7F9;
+  --surface: #FFFFFF;
+  --text: #1E293B;
+  --muted: #6C7280;
+  --primary: #2D6A8E;
+  --primary-dark: #1F506D;
+  --accent: #173B57;
+  --accent-soft: #DCE8F1;
+  --danger: #9F2936;
+  --line: #D4DAE2;
+  --line-strong: #8FA2B5;
+  --radius: 12px;
+  --font-main: "Latin Modern Roman", "LM Roman 10", "Computer Modern Serif", Georgia, serif;
+  --font-ui: "Latin Modern Roman", "LM Roman 10", Georgia, serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  background: var(--bg);
+  font-family: var(--font-main);
+}
+
+.slide {
+  position: relative;
+  width: 1280px;
+  height: 720px;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.slide::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 56px;
+  background: var(--primary);
+}
+
+.slide::after {
+  content: "";
+  position: absolute;
+  top: 34px;
+  left: 20px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.slide-content {
+  position: relative;
+  z-index: 1;
+  padding: 48px 64px 44px 96px;
+}
+
+.eyebrow {
+  margin-bottom: 10px;
+  color: var(--primary);
+  font-size: 22px;
+  font-weight: 700;
+}
+
+h1 {
+  margin: 0;
+  max-width: 920px;
+  color: var(--text);
+  font-size: 46px;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+}
+
+.subtitle {
+  margin-top: 14px;
+  max-width: 820px;
+  color: var(--muted);
+  font-size: 25px;
+  line-height: 1.28;
+}
+
+.technical-block {
+  border: 2px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 18px 20px;
+}
+
+.technical-block strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text);
+  font-size: 23px;
+}
+
+.technical-block span,
+.technical-block p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 19px;
+  line-height: 1.32;
+}
+
+.metric {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  min-height: 116px;
+  border: 2px solid var(--primary);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 18px 20px;
+}
+
+.metric .value {
+  color: var(--accent);
+  font-size: 43px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.metric .label {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 18px;
+}
+
+.orthogonal-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.connector-line {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.connector-line.accent {
+  stroke: var(--accent);
+}
+
+.connector-arrow {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.connector-arrow.accent {
+  stroke: var(--accent);
+}
+
+.photo-frame {
+  overflow: hidden;
+  border: 2px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.photo-frame img,
+.photo-frame video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.caption {
+  color: var(--muted);
+  font-size: 17px;
+}

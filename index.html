@@ -1,0 +1,1786 @@
+﻿<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Inicio de presentación</title>
+  <link rel="stylesheet" href="css/theme.css">
+  <style>
+    body {
+      display: grid;
+      min-height: 100vh;
+      margin: 0;
+      place-items: center;
+      padding: 22px;
+      background: #e9edf2;
+    }
+
+    .deck {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      background: var(--bg);
+      box-shadow: 0 20px 58px rgba(30, 41, 59, 0.22);
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: none;
+      width: 1280px;
+      height: 720px;
+    }
+
+    .slide.is-active {
+      display: block;
+    }
+
+    .slide-number {
+      position: absolute;
+      right: 42px;
+      top: 30px;
+      z-index: 3;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .slide-content {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .nav {
+      position: fixed;
+      right: 16px;
+      bottom: 12px;
+      display: flex;
+      gap: 8px;
+      z-index: 20;
+      opacity: 0.78;
+      transition: opacity 160ms ease;
+    }
+
+    .nav:hover {
+      opacity: 1;
+    }
+
+    .nav button {
+      border: 0;
+      border-radius: 999px;
+      padding: 8px 11px;
+      color: #fff;
+      background: var(--primary);
+      font-family: var(--font-main);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .latex-title {
+      display: grid;
+      min-height: 100%;
+      grid-template-rows: auto 1fr auto;
+      padding-top: 38px;
+    }
+
+    .title-logo {
+      justify-self: center;
+      width: 200px;
+      height: 200px;
+      padding: 10px;
+      object-fit: contain;
+      background: #fff;
+      border: 2px solid var(--line-strong);
+      border-radius: 50%;
+    }
+
+    .title-center {
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      text-align: center;
+      padding: 0 90px 10px;
+    }
+
+    .title-main {
+      max-width: 980px;
+      font-size: 50px;
+      line-height: 1.05;
+      letter-spacing: -0.018em;
+    }
+
+    .title-rule {
+      width: 260px;
+      height: 3px;
+      margin: 22px 0 20px;
+      background: var(--primary);
+    }
+
+    .title-note {
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 25px;
+      line-height: 1.25;
+    }
+
+    .title-meta {
+      display: grid;
+      justify-items: center;
+      gap: 6px;
+      color: var(--text);
+      text-align: center;
+      font-size: 20px;
+      line-height: 1.25;
+    }
+
+    .title-meta .muted {
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 0.82fr 1.18fr;
+      gap: 22px;
+      align-items: start;
+      margin-top: 18px;
+    }
+
+    .problem-points,
+    .stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .two-photos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      /* gap: 16px; */
+      margin-top: 0;
+      justify-items: center;
+    }
+
+    .two-photos .photo-frame {
+      width: fit-content;
+      background: transparent;
+    }
+
+    .photo-frame img.problem-photo {
+      width: 250px;
+      height: 390px !important;
+      display: block;
+      object-fit: cover !important;
+      object-position: center center;
+      background: transparent;
+    }
+
+    .photo-frame img.bandeja-photo {
+      width: 250px;
+      object-position: center center;
+    }
+
+    figure {
+      margin: 0;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: 1fr 238px;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .video-player {
+      overflow: hidden;
+      border: 2px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .video-player iframe {
+      display: block;
+      width: 100%;
+      height: 390px;
+      border: 0;
+      background: #dce8f1;
+    }
+
+    .video-list {
+      display: grid;
+      gap: 25px;
+      align-content: start;
+      padding: 25px;
+    }
+
+    .video-button {
+      display: grid;
+      gap: 4px;
+      width: 100%;
+      min-height: 74px;
+      padding: 12px 14px;
+      border: 2px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text);
+      font-family: var(--font-main);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .video-button.is-active {
+      border-color: var(--primary);
+      background: var(--accent-soft);
+    }
+
+    .video-button strong {
+      font-size: 17px;
+      line-height: 1.1;
+    }
+
+    .video-button span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.15;
+    }
+
+    .concept-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 42px;
+      align-items: stretch;
+    }
+
+    .concept-card {
+      min-height: 230px;
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      gap: 14px;
+      padding: 22px;
+      border: 2px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: var(--surface);
+      text-align: center;
+    }
+
+    .concept-number {
+      display: grid;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: var(--accent);
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .concept-card strong {
+      font-size: 25px;
+    }
+
+    .concept-card span {
+      color: var(--muted);
+      font-size: 19px;
+      line-height: 1.25;
+    }
+
+    .photo-solution-grid {
+      display: grid;
+      grid-template-columns: 0.75fr 0.25fr;
+      /* gap: 34px; */
+      align-items: center;
+      height: 100%;
+    }
+
+    .photo-solution-grid .photo-frame {
+      width: fit-content;
+      justify-self: end;
+      background: transparent;
+    }
+
+    .photo-frame img.solution-photo {
+      width: auto;
+      height: 580px !important;
+      display: block;
+      object-fit: contain !important;
+      background: transparent;
+    }
+
+    .architecture-map {
+      display: grid;
+      margin-top: 18px;
+      border: 2px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 2px;
+    }
+
+    .architecture-map img {
+      width: 100%;
+      height: 360px;
+      display: block;
+      object-fit: contain;
+    }
+
+    .media-text-grid {
+      display: grid;
+      grid-template-columns: 1fr 330px;
+      gap: 34px;
+      margin-top: 24px;
+      align-items: start;
+    }
+
+    .media-text-grid .photo-frame {
+      width: fit-content;
+      justify-self: end;
+      margin-top: -130px;
+      background: transparent;
+    }
+
+    .photo-frame img.media-photo {
+      width: auto;
+      height: 500px !important;
+      display: block;
+      object-fit: contain !important;
+      background: transparent;
+    }
+
+    .solution-copy {
+      align-self: center;
+    }
+
+    .solution-copy h1 {
+      max-width: 600px;
+    }
+
+    .solution-copy .subtitle {
+      max-width: 560px;
+    }
+    .control-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 24px;
+      align-items: start;
+      margin-top: 18px;
+    }
+
+    .control-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .control-panel .technical-block {
+      min-height: 122px;
+    }
+
+    .control-wide {
+      grid-column: 1 / -1;
+    }
+
+    .control-summary {
+      margin-top: 12px;
+    }
+
+    .component-board {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .component-card {
+      display: grid;
+      grid-template-rows: 74px auto auto;
+      min-height: 142px;
+      padding: 9px 10px 10px;
+      align-items: center;
+      justify-items: center;
+      text-align: center;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .component-card img {
+      max-width: 100%;
+      max-height: 70px;
+      object-fit: contain;
+    }
+
+    .component-card strong {
+      margin-top: 4px;
+      color: var(--primary);
+      font-size: 17px;
+      line-height: 1.05;
+    }
+
+    .component-card span {
+      margin-top: 4px;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.18;
+    }
+
+    .component-link {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 120px 1fr 118px;
+      gap: 12px;
+      align-items: center;
+      min-height: 86px;
+      padding: 10px 14px;
+      background: #eef4fb;
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+    }
+
+    .component-link img {
+      justify-self: center;
+      max-width: 106px;
+      max-height: 64px;
+      object-fit: contain;
+    }
+
+    .component-link-text {
+      display: grid;
+      gap: 3px;
+      text-align: left;
+    }
+
+    .component-link-text strong {
+      color: var(--primary);
+      font-size: 18px;
+      line-height: 1.1;
+    }
+
+    .component-link-text span {
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.25;
+    }
+
+    .signal-pill {
+      justify-self: end;
+      padding: 8px 10px;
+      color: #fff;
+      background: var(--primary);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.1;
+      text-align: center;
+    }
+
+    .sensor-grid {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 24px;
+      align-items: start;
+      margin-top: 18px;
+    }
+
+    .sensor-photo-wrap {
+      display: grid;
+      justify-items: center;
+      gap: 10px;
+    }
+
+    .sensor-photo-frame {
+      width: 330px;
+      height: 365px;
+    }
+
+    .sensor-photo-frame img {
+      object-fit: cover;
+      object-position: center bottom;
+    }
+
+    .sensor-grid .technical-block {
+      padding: 16px 18px;
+    }
+
+    .pi-grid {
+      display: grid;
+      grid-template-columns: 0.82fr 1.18fr;
+      gap: 24px;
+      align-items: start;
+      margin-top: 18px;
+    }
+
+    .pi-role {
+      display: grid;
+      align-content: center;
+      justify-items: start;
+      min-height: 390px;
+      padding: 24px 26px;
+      border: 2px solid var(--primary);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .pi-role img {
+      width: 200px;
+      max-height: 150px;
+      margin: 0 0 0px;
+      object-fit: contain;
+      justify-self: center;
+    }
+
+    .pi-role strong {
+      display: block;
+      color: var(--accent);
+      font-size: 30px;
+      line-height: 1.08;
+    }
+
+    .pi-role span {
+      display: block;
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 22px;
+      line-height: 1.28;
+    }
+
+    .pi-columns {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .pi-column {
+      min-height: 390px;
+      padding: 18px 18px;
+      border: 2px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .pi-column h2 {
+      margin: 0 0 14px;
+      color: var(--accent);
+      font-size: 24px;
+      line-height: 1.1;
+    }
+
+    .pi-column ul {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.24;
+    }
+
+    .vision-grid {
+      display: grid;
+      grid-template-columns: 0.82fr 1.18fr;
+      gap: 24px;
+      align-items: start;
+      margin-top: 18px;
+    }
+
+    .vision-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .vision-stat {
+      min-height: 128px;
+      padding: 18px 20px;
+      border: 2px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .vision-stat strong {
+      display: block;
+      color: var(--accent);
+      font-size: 34px;
+      line-height: 1;
+    }
+
+    .vision-stat span {
+      display: block;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.24;
+    }
+
+    .vision-stat.wide {
+      grid-column: 1 / -1;
+    }
+
+    .vision-shot {
+      height: 360px;
+      background: var(--surface);
+    }
+
+    .vision-shot img {
+      object-fit: contain;
+      object-position: center center;
+      background: #fff;
+    }
+
+    .decision-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+      margin-top: 18px;
+    }
+
+    .decision-flow {
+      display: grid;
+      gap: 12px;
+    }
+
+    .decision-step {
+      display: grid;
+      grid-template-columns: 58px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 15px 17px;
+      border: 2px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .decision-index {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: var(--accent);
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .decision-step strong {
+      display: block;
+      color: var(--text);
+      font-size: 22px;
+      line-height: 1.12;
+    }
+
+    .decision-step span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.24;
+    }
+
+    .decision-shot {
+      height: 320px;
+      background: var(--surface);
+    }
+
+    .decision-shot img {
+      object-fit: cover;
+      object-position: center center;
+      background: #fff;
+    }
+
+    .calibration-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 24px;
+      align-items: start;
+      margin-top: 18px;
+    }
+
+    .calibration-card {
+      padding: 24px 26px;
+      border: 2px solid var(--primary);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .calibration-equation {
+      display: grid;
+      gap: 12px;
+      margin: 4px 0 18px;
+      color: var(--accent);
+      font-size: 31px;
+      font-weight: 800;
+      line-height: 1.12;
+      text-align: center;
+    }
+
+    .calibration-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 20px;
+      line-height: 1.3;
+    }
+
+    .calibration-facts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .calibration-facts .technical-block {
+      min-height: 126px;
+      padding: 16px 18px;
+    }
+
+    .calibration-visual-layout {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .calibration-visual {
+      height: 350px;
+      background: var(--surface);
+    }
+
+    .calibration-visual img {
+      object-fit: contain;
+      object-position: center center;
+      background: #fff;
+    }
+
+    .calibration-summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .calibration-summary .technical-block {
+      min-height: 96px;
+      padding: 14px 16px;
+    }
+
+    .calibration-summary .technical-block strong {
+      font-size: 21px;
+    }
+
+    .calibration-summary .technical-block span {
+      font-size: 17px;
+    }
+
+    .calibration-grid {
+      display: none;
+    }
+
+    .robot-grid {
+      display: grid;
+      grid-template-columns: 0.88fr 1.12fr;
+      gap: 24px;
+      align-items: start;
+      margin-top: 18px;
+    }
+
+    .robot-visuals {
+      display: grid;
+      grid-template-columns: 0.75fr 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .robot-main-note {
+      display: grid;
+      grid-template-rows: 255px 0.5fr;
+      gap: 12px;
+    }
+
+    .robot-main-photo {
+      height: 255px;
+      background: var(--surface);
+    }
+
+    .robot-main-photo img {
+      object-fit: cover;
+      object-position: center 70%;
+    }
+
+    .robot-secondary-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 120px;
+      align-items: stretch;
+    }
+
+    .robot-secondary-photo {
+      height: 390px;
+      background: var(--surface);
+    }
+
+    .robot-secondary-photo img {
+      object-fit: cover;
+      object-position: center 0%;
+    }
+
+    .robot-note {
+      display: grid;
+      align-content: center;
+      padding: 20px 24px;
+      border: 2px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .robot-note strong {
+      display: block;
+      color: var(--accent);
+      font-size: 20px;
+      line-height: 1.12;
+    }
+
+    .robot-note span {
+      display: block;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.24;
+    }
+
+    .inventory-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+      margin-top: 18px;
+    }
+
+    .inventory-visual {
+      display: grid;
+      align-content: center;
+      height: 380px;
+      padding: 22px;
+      border: 2px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: #111827;
+    }
+
+    .inventory-visual img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 6px;
+    }
+
+    .inventory-points {
+      display: grid;
+      gap: 14px;
+    }
+
+    .inventory-points .technical-block {
+      min-height: 112px;
+      padding: 16px 18px;
+    }
+
+    .cycle-grid {
+      display: grid;
+      grid-template-columns: 0.82fr 1.18fr;
+      gap: 24px;
+      align-items: start;
+      margin-top: 18px;
+    }
+
+    .cycle-steps {
+      display: grid;
+      gap: 10px;
+    }
+
+    .cycle-step {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 12px;
+      align-items: center;
+      padding: 11px 14px;
+      border: 2px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .cycle-step .num {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: var(--accent);
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .cycle-step strong {
+      display: block;
+      color: var(--text);
+      font-size: 20px;
+      line-height: 1.12;
+    }
+
+    .cycle-step span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.2;
+    }
+
+    .cycle-video {
+      height: 350px;
+      background: #0f172a;
+    }
+
+    .cycle-video video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #0f172a;
+    }
+
+    .iteration-grid {
+      display: grid;
+      grid-template-columns: 0.82fr 1.18fr;
+      gap: 24px;
+      align-items: start;
+      margin-top: 18px;
+    }
+
+    .iteration-photos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .iteration-photo {
+      height: 330px;
+      background: var(--surface);
+    }
+
+    .iteration-photo img {
+      object-fit: cover;
+      object-position: center center;
+    }
+
+    .iteration-photo.final img {
+      object-position: center 42%;
+    }
+
+    .iteration-caption {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.2;
+      text-align: center;
+    }
+
+    .iteration-points {
+      display: grid;
+      gap: 13px;
+    }
+
+    .iteration-points .technical-block {
+      min-height: 105px;
+      padding: 15px 17px;
+    }
+
+    .tests-grid {
+      display: grid;
+      grid-template-columns: 0.84fr 1.16fr;
+      gap: 24px;
+      align-items: start;
+      margin-top: 18px;
+    }
+
+    .tests-points {
+      display: grid;
+      gap: 13px;
+    }
+
+    .tests-points .technical-block {
+      min-height: 104px;
+      padding: 15px 17px;
+    }
+
+    .tests-evidence {
+      height: 385px;
+      background: var(--surface);
+    }
+
+    .tests-evidence img,
+    .tests-evidence video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center -600px;
+      background: var(--surface);
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 24px;
+      align-items: start;
+      margin-top: 18px;
+    }
+
+    .model-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .result-metric {
+      min-height: 116px;
+      padding: 16px 18px;
+      border: 2px solid var(--primary);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .result-metric strong {
+      display: block;
+      color: var(--accent);
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    .result-metric span {
+      display: block;
+      margin-top: 9px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.22;
+    }
+
+    .system-funnel {
+      display: grid;
+      gap: 10px;
+    }
+
+    .funnel-row {
+      display: grid;
+      grid-template-columns: 150px 1fr 82px;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 14px;
+      border: 2px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .funnel-row strong {
+      color: var(--text);
+      font-size: 19px;
+      line-height: 1.1;
+    }
+
+    .funnel-track {
+      height: 14px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: var(--accent-soft);
+    }
+
+    .funnel-bar {
+      height: 100%;
+      background: var(--primary);
+    }
+
+    .funnel-value {
+      color: var(--accent);
+      font-size: 20px;
+      font-weight: 800;
+      text-align: right;
+    }
+
+    .closing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .closing-panel {
+      min-height: 280px;
+      padding: 22px 24px;
+      border: 2px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .closing-panel h2 {
+      margin: 0 0 16px;
+      color: var(--accent);
+      font-size: 28px;
+      line-height: 1.1;
+    }
+
+    .closing-panel ul {
+      display: grid;
+      gap: 13px;
+      margin: 0;
+      padding-left: 22px;
+      color: var(--muted);
+      font-size: 20px;
+      line-height: 1.28;
+    }
+
+    .closing-highlight {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-left: 6px solid var(--primary);
+      color: var(--text);
+      background: var(--accent-soft);
+      font-size: 21px;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .thanks-content {
+      height: 100%;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+
+    .thanks-title {
+      margin: 0;
+      color: var(--accent);
+      font-size: 76px;
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .thanks-subtitle {
+      margin: 28px auto 0;
+      max-width: 720px;
+      color: var(--muted);
+      font-size: 28px;
+      line-height: 1.25;
+    }
+  </style>
+</head>
+<body>
+  <main class="deck" aria-label="Primeras diapositivas">
+    <section class="slide is-active">
+      <div class="slide-content latex-title">
+        <img class="title-logo" src="assets/images/LogoUNR.svg" alt="Logo UNR">
+        <div class="title-center">
+          <h1 class="title-main">Sistema de Gestión de Inventario con IA para Kits de Robótica</h1>
+          <div class="title-rule"></div>
+          <p class="title-note">Proyecto II</p>
+        </div>
+        <div class="title-meta">
+          <strong>SANSONI, Uriel Isidro</strong>
+          <span class="muted">S-5494/1 · urisansoni@gmail.com</span>
+          <span class="muted">Tutor: Ing. Sergio Geninatti</span>
+          <span class="muted">Facultad de Ciencias Exactas, Ingeniería y Agrimensura</span>
+          <span class="muted">Universidad Nacional de Rosario</span>
+        </div>
+      </div>
+      <div class="slide-number">1 / 20</div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <div class="eyebrow">Problema de partida</div>
+        <h1>Un kit ordenado pierde trazabilidad cuando vuelve mezclado</h1>
+        <p class="subtitle">El orden ideal existe, pero clasificar, contar y verificar faltantes sigue dependiendo de una tarea manual.</p>
+
+        <div class="problem-grid">
+          <div class="problem-points">
+            <div class="technical-block">
+              <strong>Variedad de piezas</strong>
+              <span>Geometrías, tamaños y funciones distintas dentro del mismo kit.</span>
+            </div>
+            <div class="technical-block">
+              <strong>Proceso repetitivo</strong>
+              <span>Ordenar y contar requiere tiempo después de cada actividad práctica.</span>
+            </div>
+            <div class="technical-block">
+              <strong>Baja trazabilidad</strong>
+              <span>El inventario depende de conteos manuales y puede acumular errores.</span>
+            </div>
+          </div>
+
+          <div class="two-photos">
+            <figure class="photo-frame">
+              <img class="problem-photo caja-photo" src="assets/images/img-caja.jpeg" alt="Caja del kit">
+            </figure>
+            <figure class="photo-frame">
+              <img class="problem-photo bandeja-photo" src="assets/images/img-bandeja.jpeg" alt="Bandeja del kit">
+            </figure>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">2 / 20</div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <div class="eyebrow">Contexto tecnológico</div>
+        <h1>La clasificación automática ya es una familia de soluciones reales</h1>
+        <p class="subtitle">El proyecto toma esa lógica general —transportar, detectar, decidir y separar— y la adapta a piezas de kits educativos.</p>
+
+        <div class="video-grid">
+          <div class="video-player">
+            <iframe id="contextVideo" data-video="iWIblRMz7l4" src="about:blank" title="Video candidato seleccionado" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+          <div class="video-list" aria-label="Selección de videos">
+            <button class="video-button is-active" type="button" data-video="iWIblRMz7l4"><strong>Referencia industrial</strong><span>Clasificación / automatización.</span></button>
+            <button class="video-button" type="button" data-video="J7yw-LlB6SU"><strong>Referencia rápida</strong><span>Short de contexto.</span></button>
+            <button class="video-button" type="button" data-video="gcCzsCny-x8"><strong>Referencia de sorting</strong><span>Separación automatizada.</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">3 / 20</div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <div class="eyebrow">Oportunidad del proyecto</div>
+        <h1>Adaptar esa lógica al inventariado de kits educativos</h1>
+        <p class="subtitle">El objetivo fue construir una versión compacta que transporte piezas, las reconozca, las manipule y actualice un registro digital.</p>
+
+        <div class="concept-grid">
+          <div class="concept-card">
+            <div class="concept-number">1</div>
+            <strong>Entrada</strong>
+            <span>Piezas mezcladas luego de una actividad práctica.</span>
+          </div>
+          <div class="concept-card">
+            <div class="concept-number">2</div>
+            <strong>Proceso</strong>
+            <span>Transporte, sensado, visión artificial y robot.</span>
+          </div>
+          <div class="concept-card">
+            <div class="concept-number">3</div>
+            <strong>Salida</strong>
+            <span>Piezas clasificadas e inventario actualizado.</span>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">4 / 20</div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <div class="photo-solution-grid">
+          <div class="solution-copy">
+            <div class="eyebrow">Solución construida</div>
+            <h1>El prototipo integra transporte, visión, manipulación e inventario</h1>
+            <p class="subtitle">Antes de separar el sistema en bloques, esta es la solución final montada y validada.</p>
+          </div>
+          <figure class="photo-frame">
+            <img class="solution-photo" src="assets/images/prototipo-completo-etiquetado.png" alt="Prototipo completo etiquetado">
+          </figure>
+        </div>
+      </div>
+      <div class="slide-number">5 / 20</div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <div class="eyebrow">Diagrama global</div>
+        <h1>El sistema se organiza como un proceso integrado</h1>
+        <p class="subtitle">La imagen resume el flujo final del prototipo: ingreso, detección, decisión, manipulación y registro.</p>
+
+        <div class="architecture-map">
+          <img src="assets/images/diagrama-flujo-general.png" alt="Diagrama general horizontal del proceso final">
+        </div>
+      </div>
+      <div class="slide-number">6 / 20</div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <div class="eyebrow">Bloque mecánico</div>
+        <h1>La alimentación y transporte posicionan la pieza para inspección</h1>
+        <p class="subtitle">Se diseñó y ajustó una cinta compacta con tolva y guías para llevar las piezas hacia la zona de captura.</p>
+
+        <div class="media-text-grid">
+          <div class="stack">
+            <div class="technical-block"><strong>Componentes</strong><span>Tolva, guías, banda, poleas, estructura y piezas impresas.</span></div>
+            <div class="technical-block"><strong>Función</strong><span>Recibir piezas, ordenar parcialmente el flujo y llevarlas a inspección.</span></div>
+            <div class="technical-block"><strong>Trabajo realizado</strong><span>Diseño, montaje e iteraciones para reducir agrupamientos.</span></div>
+          </div>
+          <figure class="photo-frame">
+            <img class="media-photo" src="assets/images/cinta-tolva-paletas.png" alt="Cinta transportadora con tolva y paletas">
+          </figure>
+        </div>
+      </div>
+      <div class="slide-number">7 / 20</div>
+    </section>
+    <section class="slide">
+      <div class="slide-content">
+        <div class="eyebrow">Bloque electrónico</div>
+        <h1>El control local convierte la cinta en un subsistema sincronizado</h1>
+        <p class="subtitle">La electrónica acciona el transporte, interpreta el evento de detección y coordina el avance con el resto del sistema.</p>
+
+        <div class="control-grid">
+          <div class="stack control-summary">
+            <div class="technical-block"><strong>Rol del bloque</strong><span>Convertir la cinta en un subsistema autónomo de transporte y detección.</span></div>
+            <div class="technical-block"><strong>Función principal</strong><span>El ESP32 mantiene la cinta en marcha, lee la barrera láser-LDR y decide cuándo detenerla.</span></div>
+            <div class="technical-block"><strong>Integración</strong><span>Sincronizar la detección local con la Raspberry Pi para continuar el ciclo.</span></div>
+          </div>
+
+          <div class="component-board">
+            <div class="component-card">
+              <img src="assets/images/esp32.jpg" alt="ESP32">
+              <strong>ESP32</strong>
+              <span>Control local de marcha, parada y reinicio.</span>
+            </div>
+            <div class="component-card">
+              <img src="assets/images/a4988.jpg" alt="Driver A4988">
+              <strong>A4988</strong>
+              <span>Driver entre la lógica y el motor paso a paso.</span>
+            </div>
+            <div class="component-card">
+              <img src="assets/images/motor.webp" alt="Motor paso a paso NEMA 17">
+              <strong>NEMA 17</strong>
+              <span>Accionamiento mecánico de la cinta.</span>
+            </div>
+            <div class="component-card">
+              <img src="assets/images/DC-LM2596-WD.jpg" alt="Regulador LM2596">
+              <strong>LM2596</strong>
+              <span>Adaptación de alimentación para lógica y sensores.</span>
+            </div>
+            <div class="component-card">
+              <img src="assets/images/laser.webp" alt="Módulo láser KY-008">
+              <strong>KY-008</strong>
+              <span>Haz de referencia sobre la zona de inspección.</span>
+            </div>
+            <div class="component-card">
+              <img src="assets/images/LDR.webp" alt="Fotorresistencia LDR">
+              <strong>LDR</strong>
+              <span>Lectura del corte del haz por presencia de pieza.</span>
+            </div>
+            <div class="component-link">
+              <img src="assets/images/rpi.webp" alt="Raspberry Pi">
+              <div class="component-link-text">
+                <strong>Interfaz con Raspberry Pi</strong>
+                <span>El ESP32 no identifica la pieza: avisa cuándo la cinta queda detenida y la captura puede continuar.</span>
+              </div>
+              <div class="signal-pill">pieza lista<br>GPIO</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">8 / 20</div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <div class="eyebrow">Sensado</div>
+        <h1>La barrera láser-LDR sincroniza la cinta con la inspección</h1>
+        <p class="subtitle">El sensado detecta cuándo una pieza llega a la zona de captura y permite detener el transporte para continuar el ciclo automático.</p>
+
+        <div class="sensor-grid">
+          <div>
+            <div class="stack">
+              <div class="technical-block"><strong>Hardware utilizado</strong><span>Módulo láser KY-008, LDR y soportes impresos para ubicar emisor y receptor.</span></div>
+              <div class="technical-block"><strong>Función</strong><span>Detectar la interrupción del haz cuando una pieza pasa por la zona de inspección.</span></div>
+              <div class="technical-block"><strong>Rol en el ciclo</strong><span>Haz libre: la cinta avanza. Pieza detectada: la cinta se detiene para capturar imagen e inferir la clase.</span></div>
+            </div>
+          </div>
+
+          <div class="sensor-photo-wrap">
+            <figure class="photo-frame sensor-photo-frame">
+              <img src="assets/images/laser-1.jpeg" alt="Montaje del módulo láser en la cinta transportadora">
+            </figure>
+            <div class="caption">Montaje real del emisor láser sobre la cinta transportadora.</div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">9 / 20</div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <div class="eyebrow">Coordinación central</div>
+        <h1>La Raspberry Pi integra visión, decisión, robot e inventario</h1>
+        <p class="subtitle">En este bloque se concentra la lógica de alto nivel del prototipo: tomar datos del sistema, decidir qué pieza se detectó y ordenar las acciones siguientes.</p>
+
+        <div class="pi-grid">
+          <div class="pi-role">
+            <strong>Raspberry Pi 4</strong>
+            <span>Funciona como nodo central del ciclo automático. No acciona directamente la cinta, sino que coordina captura, inferencia, calibración, comunicación con el robot y actualización del inventario.</span>
+            <img src="assets/images/rpi.webp" alt="Raspberry Pi 4">
+          </div>
+
+          <div class="pi-columns" aria-label="Funciones de coordinación de la Raspberry Pi">
+            <div class="pi-column">
+              <h2>Entradas</h2>
+              <ul>
+                <li>Estado del sensado.</li>
+                <li>Imagen de la zona de inspección.</li>
+                <li>Parámetros de calibración.</li>
+              </ul>
+            </div>
+            <div class="pi-column">
+              <h2>Proceso</h2>
+              <ul>
+                <li>Captura y preparación de imagen.</li>
+                <li>Inferencia del modelo de visión.</li>
+                <li>Selección de clase y punto de toma.</li>
+              </ul>
+            </div>
+            <div class="pi-column">
+              <h2>Salidas</h2>
+              <ul>
+                <li>Comando de movimiento al Dobot.</li>
+                <li>Destino de depósito según clase.</li>
+                <li>Actualización del inventario digital.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">10 / 20</div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <div class="eyebrow">Visión artificial</div>
+        <h1>El modelo detecta piezas reales sobre la cinta</h1>
+        <p class="subtitle">La visión artificial se entrenó con imágenes del montaje físico, para reconocer piezas del kit en condiciones cercanas al ciclo automático.</p>
+
+        <div class="vision-grid">
+          <div class="vision-stats">
+            <div class="vision-stat"><strong>7</strong><span>clases reales de piezas consideradas para la clasificación.</span></div>
+            <div class="vision-stat"><strong>356</strong><span>imágenes totales usadas para construir el dataset.</span></div>
+            <div class="vision-stat wide"><strong>Dataset propio + Roboflow</strong><span>Las capturas se hicieron sobre la cinta, con piezas reales e iluminación propia del prototipo; Roboflow se usó para anotar imágenes, generar versiones del dataset y entrenar el modelo de detección.</span></div>
+          </div>
+
+          <div>
+            <figure class="photo-frame vision-shot">
+              <img src="assets/images/clasificacion-1.png" alt="Clasificacion del modelo de vision artificial sobre piezas del kit">
+            </figure>
+            <div class="caption">Ejemplo de imagen del dataset anotada en Roboflow: cada pieza se delimita con una caja y se asigna a una clase del kit.</div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">11 / 20</div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <div class="eyebrow">Inferencia y predicción</div>
+        <h1>La predicción define qué pieza se toma y a qué depósito va</h1>
+        <p class="subtitle">Una vez entrenado el modelo, la red devuelve una predicción sobre la imagen capturada: clase detectada, región de la pieza y confianza asociada.</p>
+
+        <div class="decision-grid">
+          <div class="decision-flow">
+            <div class="decision-step">
+              <div class="decision-index">1</div>
+              <div><strong>Predicción</strong><span>El modelo identifica la pieza dentro de la imagen y devuelve clase, región y confianza.</span></div>
+            </div>
+            <div class="decision-step">
+              <div class="decision-index">2</div>
+              <div><strong>Pieza objetivo</strong><span>El software selecciona qué detección usar y conserva su posición en imagen para el paso de calibración.</span></div>
+            </div>
+            <div class="decision-step">
+              <div class="decision-index">3</div>
+              <div><strong>Destino</strong><span>La clase predicha se vincula con un depósito del kit y prepara la orden que luego ejecuta el Dobot.</span></div>
+            </div>
+          </div>
+
+          <div>
+            <figure class="photo-frame decision-shot">
+              <img src="assets/images/pred_20260422_145142.jpg" alt="Prediccion de la red neuronal sobre piezas del kit">
+            </figure>
+            <div class="caption">Predicción de inferencia: salida de la red neuronal con cajas, clases y confianza.</div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">12 / 20</div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <div class="eyebrow">Calibración cámara-robot</div>
+        <h1>La detección en píxeles se transforma en una posición de toma</h1>
+        <p class="subtitle">Para que el Dobot pueda actuar sobre una pieza detectada, el centro de la caja en imagen debe convertirse al sistema de coordenadas físico del robot.</p>
+
+        <div class="calibration-visual-layout">
+          <figure class="photo-frame calibration-visual">
+            <img src="assets/images/Explicacion-homografia.png" alt="Explicacion grafica de homografia entre pixeles de imagen y coordenadas del robot">
+          </figure>
+
+        </div>
+
+        <div class="calibration-grid">
+          <div class="calibration-card">
+            <div class="calibration-equation">
+              <span>p_img = (u, v)</span>
+              <span>H · p_img</span>
+              <span>p_robot = (X, Y, Z_pick)</span>
+            </div>
+            <p>La homografía relaciona el plano de la cámara con el plano de trabajo. La altura de toma se mantiene fija como parámetro operativo del robot.</p>
+          </div>
+
+          <div class="calibration-facts">
+            <div class="technical-block"><strong>15 puntos</strong><span>Se usaron pares imagen-robot tomados sobre una grilla en la zona visible de la cinta.</span></div>
+            <div class="technical-block"><strong>OpenCV</strong><span>La matriz se calculó con `cv2.findHomography()` usando RANSAC.</span></div>
+            <div class="technical-block"><strong>Pose fija</strong><span>La cámara se mantiene en `vision_pose = (240, 0, 145, 25)` durante la captura.</span></div>
+            <div class="technical-block"><strong>Zona válida</strong><span>El software filtra detecciones fuera del área alcanzable antes de ordenar la toma.</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">13 / 20</div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <div class="eyebrow">Manipulación robótica</div>
+        <h1>El Dobot ejecuta la toma y el depósito según la clase detectada</h1>
+        <p class="subtitle">Después de convertir la detección a coordenadas físicas, el robot realiza la maniobra de pick and place y deposita la pieza en el sector correspondiente.</p>
+
+        <div class="robot-grid">
+          <div class="stack">
+            <div class="technical-block"><strong>Hardware utilizado</strong><span>Dobot Magician Lite, cámara montada en el extremo y efector final tipo gripper.</span></div>
+            <div class="technical-block"><strong>Función</strong><span>Tomar la pieza seleccionada sobre la cinta y trasladarla hacia el depósito asignado.</span></div>
+            <div class="technical-block"><strong>Integración</strong><span>Recibe una posición de toma y un destino definidos por la Raspberry Pi.</span></div>
+          </div>
+
+          <div class="robot-visuals">
+            <figure class="photo-frame robot-secondary-photo">
+              <img src="assets/images/prototipo-completo-1.jpeg" alt="Vista completa del prototipo con Dobot, cinta, tolva y depositos">
+            </figure>
+            <div class="robot-main-note">
+              <figure class="photo-frame robot-main-photo">
+                <img src="assets/images/disposicion-bandejas-1.jpeg" alt="Disposicion de bandejas para depositar piezas clasificadas">
+              </figure>
+              <div class="robot-note"><strong>Toma y depósito</strong><span>La clase detectada define en qué sector del kit debe terminar cada pieza.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">14 / 20</div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <div class="eyebrow">Inventario digital</div>
+        <h1>El ciclo se cierra actualizando el conteo de piezas</h1>
+        <p class="subtitle">Luego del depósito, el software registra la clase manipulada y actualiza un archivo de inventario para mantener trazabilidad del kit.</p>
+
+        <div class="inventory-grid">
+          <div class="inventory-points">
+            <div class="technical-block"><strong>Registro por clase</strong><span>Cada pieza depositada incrementa el contador asociado a la clase reconocida.</span></div>
+            <div class="technical-block"><strong>Persistencia</strong><span>El inventario queda guardado en archivo, no solo como salida temporal de terminal.</span></div>
+            <div class="technical-block"><strong>Trazabilidad</strong><span>El resultado del ciclo físico queda vinculado con un registro digital verificable.</span></div>
+          </div>
+
+          <div>
+            <figure class="inventory-visual">
+              <img src="assets/images/inventario-txt.png" alt="Archivo de inventario digital con conteos por clase">
+            </figure>
+            <div class="caption">Ejemplo de archivo de inventario actualizado por clase.</div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">15 / 20</div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <div class="eyebrow">Ciclo automático integrado</div>
+        <h1>Los bloques se encadenan en una secuencia única de operación</h1>
+        <p class="subtitle">El prototipo combina transporte, sensado, visión artificial, manipulación robótica e inventario en un ciclo funcional completo.</p>
+
+        <div class="cycle-grid">
+          <div class="cycle-steps">
+            <div class="cycle-step"><div class="num">1</div><div><strong>Pieza disponible</strong><span>La cinta transporta la pieza hasta la zona de inspección.</span></div></div>
+            <div class="cycle-step"><div class="num">2</div><div><strong>Sensor activa captura</strong><span>La barrera óptica detiene la cinta y habilita la imagen.</span></div></div>
+            <div class="cycle-step"><div class="num">3</div><div><strong>Predicción y decisión</strong><span>La Raspberry procesa la detección y selecciona la pieza objetivo.</span></div></div>
+            <div class="cycle-step"><div class="num">4</div><div><strong>Toma, depósito e inventario</strong><span>El Dobot deposita la pieza y el conteo digital registra el cierre del ciclo.</span></div></div>
+          </div>
+
+          <div>
+            <figure class="photo-frame cycle-video">
+              <video src="assets/videos/sincronizacion_prototipo_terminal_offset_15s.mp4" controls preload="metadata"></video>
+            </figure>
+            <div class="caption">Video del prototipo ejecutando el ciclo integrado.</div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">16 / 20</div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <div class="eyebrow">Ensayos realizados</div>
+        <h1>La validación avanzó desde pruebas por bloque hasta corrida integral</h1>
+        <p class="subtitle">Antes de medir resultados, cada subsistema se probó por separado y luego se integró en una ejecución automática supervisada.</p>
+
+        <div class="tests-grid">
+          <div class="tests-points">
+            <div class="technical-block"><strong>Pruebas por bloque</strong><span>Transporte, sensor, cámara, inferencia, Dobot e inventario se validaron de forma independiente.</span></div>
+            <div class="technical-block"><strong>Integración progresiva</strong><span>Se encadenaron señal del ESP32, captura, predicción, toma robótica y registro digital.</span></div>
+            <div class="technical-block"><strong>Corrida integral</strong><span>La validación funcional final se realizó sobre 35 ciclos automáticos consecutivos.</span></div>
+          </div>
+
+          <div>
+            <figure class="photo-frame tests-evidence">
+              <video src="assets/videos/WhatsApp Video 2026-05-18 at 16.59.34.mp4" autoplay muted loop playsinline preload="metadata"></video>
+            </figure>
+            <!-- <div class="caption">Evidencia del ensayo integrado: cinta, sensado, toma robótica y depósitos trabajando dentro del ciclo automático.</div> -->
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">17 / 20</div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <div class="eyebrow">Resultados medibles</div>
+        <h1>El prototipo validó la integración con resultados cuantificables</h1>
+        <p class="subtitle">Los resultados combinan el desempeño del modelo de visión con la validación funcional del sistema físico completo.</p>
+
+        <div class="results-grid">
+          <div class="model-metrics">
+            <div class="result-metric"><strong>99,5%</strong><span>mAP@50 del modelo final.</span></div>
+            <div class="result-metric"><strong>96,6%</strong><span>Precisión en validación.</span></div>
+            <div class="result-metric"><strong>98,6%</strong><span>Recall del modelo.</span></div>
+            <div class="result-metric"><strong>97,6%</strong><span>F1-score final.</span></div>
+          </div>
+
+          <div class="system-funnel">
+            <div class="funnel-row"><strong>Evaluados</strong><div class="funnel-track"><div class="funnel-bar" style="width:100%"></div></div><div class="funnel-value">35</div></div>
+            <div class="funnel-row"><strong>Clasificación</strong><div class="funnel-track"><div class="funnel-bar" style="width:91.4%"></div></div><div class="funnel-value">32/35</div></div>
+            <div class="funnel-row"><strong>Toma</strong><div class="funnel-track"><div class="funnel-bar" style="width:82.9%"></div></div><div class="funnel-value">29/35</div></div>
+            <div class="funnel-row"><strong>Depósito</strong><div class="funnel-track"><div class="funnel-bar" style="width:80%"></div></div><div class="funnel-value">28/35</div></div>
+            <div class="funnel-row"><strong>Sin intervención</strong><div class="funnel-track"><div class="funnel-bar" style="width:77.1%"></div></div><div class="funnel-value">27/35</div></div>
+            <div class="funnel-row"><strong>Tiempo</strong><div class="funnel-track"><div class="funnel-bar" style="width:70%"></div></div><div class="funnel-value">~20 s</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">18 / 20</div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <div class="eyebrow">Conclusión y continuidad</div>
+        <h1>Se construyó una base funcional para automatizar inventario de kits</h1>
+        <p class="subtitle">El trabajo demostró la viabilidad de integrar transporte, sensado, visión artificial, manipulación robótica e inventario digital en un prototipo operativo.</p>
+
+        <div class="closing-grid">
+          <div class="closing-panel">
+            <h2>Qué quedó validado</h2>
+            <ul>
+              <li>Arquitectura completa por bloques funcionando en conjunto.</li>
+              <li>Clasificación de piezas reales con modelo entrenado sobre el montaje final.</li>
+              <li>Ciclo automático con toma, depósito y actualización de inventario.</li>
+            </ul>
+          </div>
+
+          <div class="closing-panel">
+            <h2>Próximas mejoras</h2>
+            <ul>
+              <li>Alimentación individual para reducir agrupamientos.</li>
+              <li>Mejoras en agarre y punto efectivo de toma.</li>
+              <li>Inferencia local y ampliación del conjunto de clases.</li>
+              <li>Interfaz gráfica y gestión avanzada.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="closing-highlight">Resultado central: el prototipo no solo reconoce piezas; coordina hardware, software y registro digital en una secuencia automatizada verificable.</div>
+      </div>
+      <div class="slide-number">19 / 20</div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content thanks-content">
+        <div>
+          <h1 class="thanks-title">Muchas gracias</h1>
+          <p class="thanks-subtitle">por su atención</p>
+        </div>
+      </div>
+      <div class="slide-number">20 / 20</div>
+    </section>
+  </main>
+
+  <nav class="nav" aria-label="Navegación">
+    <button type="button" data-prev>Anterior</button>
+    <button type="button" data-next>Siguiente</button>
+  </nav>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    let current = 0;
+
+    function show(index) {
+      current = (index + slides.length) % slides.length;
+      slides.forEach((slide, i) => slide.classList.toggle("is-active", i === current));
+      syncAutoplayVideos();
+    }
+
+    function syncAutoplayVideos() {
+      slides.forEach((slide, i) => {
+        slide.querySelectorAll("video[autoplay]").forEach((video) => {
+          if (i === current) {
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      });
+    }
+
+    document.querySelector("[data-prev]").addEventListener("click", () => show(current - 1));
+    document.querySelector("[data-next]").addEventListener("click", () => show(current + 1));
+
+    function youtubeEmbedUrl(id) {
+      const origin = window.location.origin && window.location.origin !== "null"
+        ? window.location.origin
+        : window.location.href;
+      const params = new URLSearchParams({
+        rel: "0",
+        modestbranding: "1",
+        enablejsapi: "1",
+        origin
+      });
+      return `https://www.youtube.com/embed/${id}?${params.toString()}`;
+    }
+
+    const player = document.querySelector("#contextVideo");
+    player.src = youtubeEmbedUrl(player.dataset.video);
+
+    document.querySelectorAll("[data-video]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const id = button.dataset.video;
+        player.dataset.video = id;
+        player.src = youtubeEmbedUrl(id);
+        document.querySelectorAll("[data-video]").forEach((item) => {
+          item.classList.toggle("is-active", item === button);
+        });
+      });
+    });
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowRight" || event.key === " ") show(current + 1);
+      if (event.key === "ArrowLeft") show(current - 1);
+    });
+
+    const requestedSlide = Number(new URLSearchParams(window.location.search).get("slide"));
+    if (Number.isInteger(requestedSlide) && requestedSlide >= 1 && requestedSlide <= slides.length) {
+      show(requestedSlide - 1);
+    } else {
+      syncAutoplayVideos();
+    }
+  </script>
+</body>
+</html>
+
